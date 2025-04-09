@@ -1,0 +1,591 @@
+html, body {
+height: 100%;
+margin: 0;
+font-family: "Georgia", "Hiragino Sans GB", "Microsoft Yahei", serif;
+background: url("images/genshin1.png") no-repeat center center fixed;
+background-size: cover;
+color: #fdfdfd;
+font-size: 18px;
+line-height: 2;
+letter-spacing: 1.2px;
+}
+
+a {
+color: #ebf7f4;
+}
+
+.body--ready {
+background-color: #0f4c75
+}
+
+.text {
+position: fixed;
+bottom: 100px;
+text-align: center;
+width: 100%;
+}
+
+.canvas {
+margin: 0 auto;
+display: block;
+}
+
+img#logo {
+width: 128px;
+background-size: cover;
+border-radius: 200px;
+box-shadow: 0px 0px 40px rgba(63, 81, 181, 0.72);
+border: 3px solid #00a0ff;
+opacity: 1;
+margin: 0 auto;
+margin-top: 20px;
+margin-bottom: 20px;
+transition: all 1.0s;
+}
+
+#logo:hover {
+box-shadow: 0 0 10px #fff;
+-webkit-box-shadow: 0 0 19px #fff;
+transform: rotate(360deg);
+-ms-transform: rotate(360deg);
+/* IE 9 */
+-moz-transform: rotate(360deg);
+/* Firefox */
+-webkit-transform: rotate(360deg);
+/* Safari 和 Chrome */
+-o-transform: rotate(360deg);
+/* Opera */
+filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+#genshin-logo {
+position: fixed;
+top: 20px;
+right: 20px;
+width: 120px;
+z-index: 999;
+opacity: 0.95;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+border-radius: 50%;
+}
+
+#genshin-logo:hover {
+transform: scale(1.1) rotate(5deg);
+box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+.click-tip {
+position: fixed;
+bottom: 280px;
+right: 40px;
+background: rgba(255, 255, 255, 0.6); /* 更透明 */
+color: #333;
+font-size: 16px;
+padding: 10px 14px;
+border-radius: 14px;
+box-shadow: 0 0 12px #ffcb6b, 0 0 20px #ffd700;
+opacity: 0;
+transition: opacity 0.4s ease;
+z-index: 999;
+display: flex;
+align-items: center;
+gap: 8px;
+animation: floatTip 2s ease-in-out infinite;
+pointer-events: none; /* 鼠标穿透 */
+}
+
+#tip-emoji {
+font-size: 18px;
+animation: popEmoji 1.5s ease-in-out infinite;
+}
+
+
+@keyframes floatTip {
+0% { transform: translateY(0px); }
+50% { transform: translateY(-6px); }
+100% { transform: translateY(0px); }
+}
+
+@keyframes popEmoji {
+0% { transform: scale(1); }
+50% { transform: scale(1.25); }
+100% { transform: scale(1); }
+}
+
+
+
+/* 派蒙动画定义保持不变 */
+.paimon {
+position: fixed;
+bottom: 10px;
+right: 20px;
+width: 200px;
+opacity: 0.9;
+animation: float 3s ease-in-out infinite, glow 2s infinite alternate;
+transition: all 0.3s ease;
+z-index: 20;
+}
+
+/* 悬停时效果 */
+.paimon:hover {
+animation: floatFast 1s ease-in-out infinite, glowFast 1s infinite alternate;
+opacity: 1;
+}
+
+/* 点击时派蒙放大变模糊 */
+.paimon.clicked {
+animation: clickEffect 2s forwards;
+}
+
+/* 整体浮动/发光动画 */
+@keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+@keyframes floatFast { 0% { transform: translateY(0); } 50% { transform: translateY(-30px); } 100% { transform: translateY(0); } }
+@keyframes glow { 0% { box-shadow: 0 0 20px #ffd700; } 100% { box-shadow: 0 0 50px #fff, 0 0 80px #ffd700; } }
+@keyframes glowFast { 0% { box-shadow: 0 0 30px #ff8c00; } 100% { box-shadow: 0 0 70px #ff6f61, 0 0 100px #ff8c00; } }
+
+/* 点击派蒙时的动画 */
+@keyframes clickEffect {
+0% {
+transform: scale(1);
+opacity: 0.9;
+filter: blur(0);
+}
+50% {
+transform: scale(1.5);
+opacity: 0.2;
+filter: blur(8px);
+}
+100% {
+transform: scale(1);
+opacity: 0.9;
+filter: blur(0);
+}
+}
+
+/* 整个页面模糊+变白的遮罩层 */
+#white-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+backdrop-filter: blur(0px);
+background: rgba(255, 255, 255, 0);
+z-index: 9999;
+pointer-events: none;
+transition: backdrop-filter 2s ease, background 2s ease;
+}
+
+
+/* 优化愿望容器样式（玻璃感 + 光晕） */
+.wish-container {
+    position: fixed;
+    bottom: 60%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background: rgba(255, 255, 255, 0.2);
+    padding: 16px 28px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.3), 0 0 25px rgba(173, 216, 255, 0.6);
+    z-index: 10000;
+    backdrop-filter: blur(8px);
+    animation: floatUp 4s ease-out forwards;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.wish-text {
+    font-size: 22px;
+    color: #fff;
+    text-shadow: 0 0 4px #cceeff, 0 0 8px #88ccff;
+    font-family: "HYWenHei", "Genshin", "MiSans", sans-serif;
+    z-index: 2;
+    position: relative;
+}
+
+.wish-glow {
+    position: absolute;
+    top: -30%;
+    left: -30%;
+    width: 160%;
+    height: 160%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent 60%);
+    animation: shimmer 3s infinite linear;
+    z-index: 1;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translate(-50%, 20px) rotateZ(0deg);
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -120px) rotateZ(2deg);
+        opacity: 0;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        opacity: 0.3;
+    }
+}
+
+.wish-container.fade-out {
+    opacity: 0;
+    transform: translate(-50%, -160px) scale(0.95);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+/* 星星粒子样式 */
+.floating-star {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #fff, rgba(255,255,255,0.2));
+    border-radius: 50%;
+    box-shadow: 0 0 8px #a0e4ff, 0 0 14px #80d0ff;
+    animation: star-float 3s ease-out forwards;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+@keyframes star-float {
+    from {
+        transform: translateY(0px) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100px) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* 抽奖祝福卡片样式 */
+.lottery-card {
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px 36px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.2), 0 0 28px rgba(173, 216, 255, 0.5);
+    backdrop-filter: blur(10px);
+    z-index: 10001;
+    animation: floatFade 4s ease-out forwards;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.lottery-text {
+    font-size: 22px;
+    color: #fff;
+    text-shadow: 0 0 6px #b3e5ff, 0 0 12px #66ccff;
+    font-family: "HYWenHei", "Genshin", "MiSans", sans-serif;
+    position: relative;
+    z-index: 2;
+}
+
+.lottery-glow {
+    position: absolute;
+    top: -40%;
+    left: -40%;
+    width: 180%;
+    height: 180%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+    animation: shimmer 4s linear infinite;
+    z-index: 1;
+}
+
+@keyframes floatFade {
+    0% {
+        transform: translate(-50%, 10px);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -80px);
+        opacity: 0;
+    }
+}
+
+.fade-out {
+    opacity: 0;
+    transform: translate(-50%, -100px);
+    transition: all 1s ease;
+}
+
+
+
+
+/* 设置按钮悬停效果 */
+#switch-bg,
+#open-web,
+#open-web-two,
+#open-web-three,
+#open-web-four,
+#open-web-five,
+#open-web-six,
+#open-web-seven,
+#my-website,
+#fireworks,
+#lottery,
+#wish {
+position: fixed;
+left: 20px;
+font-size: 16px;
+font-weight: bold;
+padding: 12px 20px;
+border-radius: 12px;
+cursor: pointer;
+color: #fff;
+border: 2px solid rgba(255, 255, 255, 0.3);
+z-index: 999;
+
+/* 彩色渐变背景 + 光感 */
+background: linear-gradient(135deg, #3fc9ff, #8e7cff, #ff9edb);
+background-size: 400% 400%;
+animation: gradientFlow 8s ease infinite;
+
+/* 光晕和模糊背景感 */
+box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+backdrop-filter: blur(6px);
+transition: all 0.3s ease;
+}
+
+/* 分别控制位置垂直排列 */
+
+#switch-bg {
+top: 10px;
+}
+#open-web {
+top: 90px;
+}
+#open-web-two {
+top: 170px;
+}
+#open-web-three {
+top: 250px;
+}
+#open-web-four {
+top: 330px;
+}
+#open-web-five {
+top: 410px;
+}
+#open-web-six {
+top: 490px; 
+}
+#open-web-seven {
+top: 570px;
+}
+
+#fireworks {
+top: 650px;
+}
+
+#lottery {
+top: 730px;
+}
+
+#wish {
+top: 810px;
+}
+
+#my-website {
+top: 890px;
+}
+
+
+/* 悬停：增强光感 + 抖动 */
+#switch-bg:hover,
+#open-web:hover,
+#open-web-two:hover,
+#open-web-three:hover,
+#open-web-four:hover,
+#open-web-five:hover,
+#open-web-six:hover,
+#open-web-seven:hover,
+#my-website:hover,
+#fireworks:hover,
+#lottery:hover,
+#wish:hover {
+animation: shake 0.3s ease-in-out, gradientFlow 8s ease infinite;
+box-shadow: 0 0 22px rgba(255, 255, 255, 0.7);
+}
+
+/* 抖动动画 */
+@keyframes shake {
+0% { transform: translate(0, 0); }
+25% { transform: translate(2px, -2px); }
+50% { transform: translate(-2px, 2px); }
+75% { transform: translate(2px, 2px); }
+100% { transform: translate(0, 0); }
+}
+
+/* 渐变流动动画 */
+@keyframes gradientFlow {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+
+
+.cs {
+width: 100%;
+height: 100%;
+margin: 0 auto;
+position: absolute;
+text-align: center;
+}
+
+.text {
+position: absolute;
+bottom: 80px;
+text-align: center;
+width: 100%;
+font-weight: bold;
+color: #ffffdd;
+}
+
+.text-right {
+position: fixed;
+bottom: 50px;
+text-align: right;
+width: 100%;
+font-weight: bold;
+}
+
+#loading-screen {
+position: fixed;
+z-index: 99999;
+background-color: #0f4c75;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+text-align: center;
+color: #fff;
+font-size: 20px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+.loader {
+border: 8px solid #f3f3f3;
+border-top: 8px solid #00cfff;
+border-radius: 50%;
+width: 80px;
+height: 80px;
+animation: spin 1.5s linear infinite;
+margin-bottom: 20px;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+font-family: "HYWenHei-85W", sans-serif;
+color: #ffffdd;
+}
+
+.button-group {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 20px;
+position: relative;
+z-index: 1000;
+margin-top: 80px;
+}
+
+#star-container {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 999;
+}
+
+.star {
+position: absolute;
+top: -20px;
+width: 16px;
+height: 16px;
+background: radial-gradient(circle at center, #b0f3ff, #7fdfff, #00c2ff);
+clip-path: polygon(
+50% 0%, 
+61% 35%, 
+98% 35%, 
+68% 57%, 
+79% 91%, 
+50% 70%, 
+21% 91%, 
+32% 57%, 
+2% 35%, 
+39% 35%
+);
+opacity: 0.9;
+transform: rotate(0deg);
+animation: fall linear forwards;
+box-shadow: 0 0 10px #00c2ff, 0 0 20px #7fdfff, 0 0 30px #00ffff;
+transition: transform 0.3s ease-in-out;
+pointer-events: none;
+}
+
+/* 拖尾光迹效果 */
+.star::after {
+content: '';
+position: absolute;
+width: 4px;
+height: 50px;
+top: 12px;
+left: 4px;
+background: linear-gradient(
+to bottom, 
+rgba(255, 0, 0, 0.8), 
+rgba(255, 165, 0, 0.8), 
+rgba(255, 255, 0, 0.8), 
+rgba(0, 128, 0, 0.8), 
+rgba(0, 0, 255, 0.8), 
+rgba(75, 0, 130, 0.8), 
+rgba(143, 0, 255, 0.8), 
+transparent
+);
+filter: blur(2px);
+transform: rotate(0deg);
+}
+
+@keyframes fall {
+0% {
+transform: translateY(0) scale(1);
+opacity: 0.8;
+}
+100% {
+transform: translateY(100vh) scale(0.5);
+opacity: 0;
+}
+}

@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>生日快乐</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<div id="click-tip" class="click-tip">
+    <span id="tip-emoji">(｡･∀･)ﾉﾞ</span>
+    <span id="tip-text">要不要点点我试试？</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+<body>
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <p class="loading-text">正在载入提瓦特大陆…</p>
+    </div>
+    
+    <!-- 你的头像哩 -->
+    <div class="cs">
+        <a href="https://space.bilibili.com/1508999636?spm_id_from=333.1387.fans.user_card.click" target="_blank" title="点击头像查看B站主页!">
+            <img src="./image.png" id="logo" alt="Paimon Avatar">
+        </a>
+    </div>
+    
+    <!-- 原神Logo -->
+    <img id="genshin-logo" src="./genshin-logo.jpg" alt="Genshin Impact Logo">
+    <a href="https://genshin.hoyoverse.com" target="_blank" title="点击进入原神官网!">
+        <img id="genshin-logo" src="./genshin-logo.jpg" alt="Genshin Logo">
+    </a>
+
+    <canvas class="canvas" width="1800" height="905"></canvas>  
+
+    <!-- 右下角派蒙 -->
+     
+    <img class="paimon" src="./paimon.jpg" alt="Paimon">
+
+    <!-- 功能按钮，居中显示 -->
+    <button id="switch-bg" class="genshin-button">切换背景</button>
+    <button id="open-web" class="genshin-button">弹风之琴</button>
+    <button id="open-web-two" class="genshin-button">角色攻略</button>
+    <button id="open-web-three" class="genshin-button">原魔计算</button>
+    <button id="open-web-four" class="genshin-button">原神辞典</button>
+    <button id="open-web-five" class="genshin-button">国际名游</button>
+    <button id="open-web-six" class="genshin-button">安柏计划</button>
+    <button id="open-web-seven" class="genshin-button">原神Wiki</button>
+    <button id="fireworks" class="genshin-button">播放烟花</button>
+    <button id="lottery" class="genshin-button">祝福抽奖</button>
+    <button id="wish" class="genshin-button">生日许愿</button>
+    <button id="my-website" class="genshin-button">作者地址</button>
+
+    
+    <!-- 白色模糊遮罩层 -->
+    <div id="white-overlay"></div>
+
+    <!-- 星星动画容器 -->
+    <div id="star-container"></div>
+
+
+
+    <script>
+
+        function getRandomColor() {
+            const colors = [
+                "#ff4500", // 橘红
+                "#c71585", // 紫红
+                "#1e90ff", // 深蓝
+                "#ff1493", // 深粉
+                "#ffd700", // 金黄
+                "#8a2be2", // 靛紫
+                "#00ced1", // 深青绿
+                "#ff6347"  // 番茄红
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function createStar() {
+            const star = document.createElement('div');
+            star.classList.add('star');
+
+            star.style.left = Math.random() * window.innerWidth + 'px';
+            star.style.animationDuration = 3 + Math.random() * 5 + 's';
+            star.style.opacity = 0.6 + Math.random() * 0.4;
+            star.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+            document.body.appendChild(star);
+
+            setTimeout(() => {
+                star.remove();
+            }, 8000); // 清除时间保持长点避免闪烁
+        }
+        // 每 200ms 检查是否生成新星星
+        setInterval(() => {
+            if (Math.random() < 0.6) createStar(); 
+        }, 200);
+
+        // 按钮居中显示
+        const bgImages = [
+            'url(images/genshin1.png)',
+            'url(images/genshin2.jpg)',
+            'url(images/genshin3.jpg)',
+            'url(images/genshin4.png)',
+            'url(images/genshin5.jpg)',
+            'url(images/genshin6.png)',
+            'url(images/genshin7.png)',
+            'url(images/genshin8.png)',
+            'url(images/genshin.jpg)'
+        ];
+
+        // 随机背景图片
+        let currentBg = 0;
+
+        // 切换背景
+        document.getElementById("switch-bg").onclick = () => {
+            currentBg = (currentBg + 1) % bgImages.length;
+            document.body.style.backgroundImage = bgImages[currentBg];
+            document.body.style.backgroundSize = "cover";
+            document.body.style.transition = "background 1s ease-in-out";
+        };
+
+        // 进入新网页
+        document.getElementById("open-web").onclick = function () {
+        // 跳转到另一个页面
+        window.location.href = "Genshin-piano-main/index.html";
+        };
+
+        // 进入新网页
+        document.getElementById("open-web-two").onclick = function () {
+        // 跳转到另一个页面
+        window.location.href = "https://bbs.mihoyo.com/ys/strategy/channel/map/37/39?bbs_presentation_style=no_header";
+        };
+
+        // 进入新网页
+        document.getElementById("open-web-three").onclick = function () {
+        // 跳转到另一个页面
+        window.location.href = "https://genshin.mingyulab.com/artifact_set_compare/artifact_set_compare";
+        };
+
+        // 进入新网页
+        document.getElementById("open-web-four").onclick = function () {
+        // 跳转到另一个页面
+        window.location.href = "https://genshin-dictionary.com/zh-CN";
+        };
+
+        // 进入新网页
+        document.getElementById("open-web-five").onclick = function () {
+        // 跳转到另一个页面
+        window.location.href = "https://keqingmains.com/";  
+        }
+
+        // 进入新网页
+        document.getElementById("open-web-six").onclick = function () {
+        // 跳转到另一个页面
+        window.location.href = "https://gi.yatta.moe/chs";  
+        }
+        
+        // 进入新网页
+        document.getElementById("open-web-seven").onclick = function () {
+        // 跳转到另一个页面
+        window.location.href = "https://genshin-impact.fandom.com/wiki/Genshin_Impact_Wiki";  
+        }
+        
+        // 进入新网页
+        document.getElementById("my-website").onclick = function () {
+            // 跳转到另一个页面
+            window.location.href = "https://space.bilibili.com/506161505?spm_id_from=333.1007.0.0";  
+        }
+
+
+        // 加载完成后隐藏加载屏幕
+        window.onload = function () {
+            setTimeout(() => {
+                document.getElementById("loading-screen").style.display = "none";
+                document.body.classList.add("body--ready");
+            }, 2500); // 模拟加载时间
+        };
+
+        const paimon = document.querySelector(".paimon");
+        const tipBox = document.getElementById("click-tip");
+        const tipText = document.getElementById("tip-text");
+        const tipEmoji = document.getElementById("tip-emoji");
+
+        let clickCount = 0;
+        let hoverTimeout = null;
+
+        const secretLink = "https://wiki.biligame.com/ys/%E6%B4%BE%E8%92%99";
+        const emojis = ["(✧∀✧)", "(｡♥‿♥｡)", "(*≧▽≦)", "(๑•̀ㅂ•́)و✧", "(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄)", "(･ω<)☆", "(๑>◡<๑)"];
+
+        // 鼠标悬停：延迟 3~5 秒才显示提示
+        paimon.addEventListener("mouseenter", () => {
+            const delay = 3000 + Math.random() * 2000; // 3~5 秒
+            hoverTimeout = setTimeout(() => {
+                tipEmoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                tipText.textContent = `你已经点击了 ${clickCount} 次派蒙啦~`;
+                tipBox.style.opacity = 1;
+            }, delay);
+        });
+
+        paimon.addEventListener("mouseleave", () => {
+            clearTimeout(hoverTimeout);
+            tipBox.style.opacity = 0;
+        });
+
+        // 点击：继续保留模糊变白 + 跳转功能
+        const overlay = document.createElement("div");
+        overlay.id = "white-overlay";
+        document.body.appendChild(overlay);
+
+        paimon.addEventListener("click", function () {
+            clickCount++;
+
+            // 模糊白屏特效
+            this.classList.add("clicked");
+            overlay.style.backdropFilter = "blur(80px)";
+            overlay.style.background = "rgba(255, 255, 255, 0.98)";
+
+            setTimeout(() => {
+                this.classList.remove("clicked");
+                overlay.style.backdropFilter = "blur(0px)";
+                overlay.style.background = "rgba(255, 255, 255, 0)";
+            }, 2000);
+
+            if (clickCount === 3) {
+                setTimeout(() => {
+                    window.location.href = secretLink;
+                }, 2000);
+            }
+        });
+
+
+        function createStar() {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.animationDuration = Math.random() * 2 + 3 + 's';
+        document.getElementById('star-container').appendChild(star);
+
+        setTimeout(() => {
+            star.remove();
+        }, 5000);
+        }
+
+        setInterval(createStar, 200);
+
+
+
+
+    </script>
+
+    <!-- 出生计时 -->
+    <p class="text">
+        你来到这个世界已经 <br />
+        <span id="span_dt_dt"></span>
+    </p>
+
+</body>
+
+<!--  设定出生日期 -->
+<script type="text/javascript" src="time.js"></script>
+<!-- canvas动画 -->
+<script type="text/javascript" src="index.js"></script>
+<!-- 背景音乐 -->
+<audio id="music" src="./happybirthday.mp3" autoplay preload="auto" loop="loop">该浏览器不支持audio属性</audio>
+<!-- copyright -->
+<footer style="color: #BBE1FA; text-align:center;">
+    <font size="2" color=#BBE1FA>©2025/4/10 生日快乐 &nbsp 我的朋友</font>
+</footer>
+
+</html>
